@@ -1,0 +1,16 @@
+<script type="text/javascript" src="<?php echo APP_HOST;?>public/js/userList.js"></script>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>ratio</th>
+    </tr>
+    <?php foreach($list as $v){;?>
+    <tr>
+        <td><?php echo $v['id'];?></td>
+        <td><?php echo $v['name'];?></td>
+        <td><?php echo $v['ps'];?></td>
+    </tr>
+    <?php }?>
+</table>
+<p><?php echo $page;?></p>
