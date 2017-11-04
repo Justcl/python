@@ -16,10 +16,10 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
 
     //debug是否开启
     public function _initError() {
-        if ($this->arrConfig->debug){
+        if ($this->arrConfig->debug) {
             define('DEBUG_MODE', false);
             ini_set('display_errors', 'On');
-        }else{
+        } else {
             define('DEBUG_MODE', false);
             ini_set('display_errors', 'Off');
         }
@@ -27,7 +27,7 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
 
     //载入数据库
     public function _initDatabase() {
-        $db_config=$this->arrConfig->db->toArray();
+        $db_config = $this->arrConfig->db->toArray();
         Yaf_Registry::set('db', new DB($db_config));
     }
 
@@ -40,11 +40,11 @@ class Bootstrap extends Yaf_Bootstrap_Abstract {
 
     //开启session
     public function _initSession() {
-        if(!$this->arrConfig->session){
+        if (!$this->arrConfig->session) {
             Yaf_Session::getInstance()->start();
-        }else{
-            $sesConfig=$this->arrConfig->session->save->toArray();
-            switch ($sesConfig['handle']){
+        } else {
+            $sesConfig = $this->arrConfig->session->save->toArray();
+            switch ($sesConfig['handle']) {
                 case 'redis':
                     SessionRedisManager::getInstance($sesConfig);
                     break;
