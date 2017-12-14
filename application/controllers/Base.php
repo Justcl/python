@@ -11,7 +11,8 @@ class BaseController extends Yaf_Controller_Abstract {
     public $layoutFile;
     public $configList;
     public $viewDir;
-
+    static $successCode=200;
+    static $failCode=400;
     public function init() {
         $this->configList = Yaf_Registry::get('config');
         $this->viewDir = $this->configList->application->view->directory;
@@ -88,4 +89,48 @@ class BaseController extends Yaf_Controller_Abstract {
          $log=new Log(APP_NAME.'_log',$type,$this->getModuleName(),$this->getControllerName(),$this->getActionName());
          $log->writeLog($msg);
     }
+
+    public function failReturn($data){
+
+    }
+
+    protected function _successReturn(string $msg='',array $data=[]){
+        !$data and $data = [];
+        $this->_return(self::$successCode, $msg, $data);
+    }
+
+    public function _failReturn(string $msg='',array $data=[]) {
+        !$data and $data = [];
+        $this->_return(self::$failCode, $msg, $data);
+    }
+
+    protected function _return($code = '400', $message = '数据获取/处理失败', $fields = false) {
+        header('Content-Type: application/json; charset=utf-8');
+        $returnData['code'] = $code;
+        $returnData['message'] = $message;
+
+        if ($fields and is_array($fields)) {
+            $returnData['data'] = $this->_valueFilter($fields);
+        } else {
+            $returnData['data'] = [];
+        }
+        echo json_encode($returnData, JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    private function _valueFilter($array) {
+        if (is_array($array)) {
+            foreach ($array as $key => &$value) {
+                if (is_array($value) and $value) {  //数组并不为空
+                    $value = $this->_valueFilter($value);
+                } else {
+                    if (is_null($value)) {
+                        $value = "";
+                    }
+                }
+            }
+        }
+        return $array;
+    }
+
 }

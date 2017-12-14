@@ -7,7 +7,9 @@
  */
 class LoginController extends BaseController{
 
-
+     public function test(){
+         echo 1;die;
+     }
 
 
 }

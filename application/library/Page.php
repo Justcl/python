@@ -120,12 +120,16 @@ class Page {
         if ($this->pageCount > 0) {
             $html = '<nav class="pagination"><span><mark>' . $this->itemCount . '</mark>条记录' . $this->currPage . '/' . $this->pageCount . '页</span>';
             if ($this->currPage > 1) {
-                $html .= ' <a href="' . $this->buildPageUrl($this->currPage - 1) . '">上一页</a>';
+                //$html .= ' <a href="' . $this->buildPageUrl($this->currPage - 1) . '">上一页</a>';
+                $prePage=$this->currPage - 1;
+                $html .= ' <a ng-click="changePage('.$prePage.')">上一页</a>';
             }
 
             if ($this->currPage > $startMargin) {
-                $html .= ' <a href="' . $this->buildPageUrl(1) . '">1</a>';
-                $html .= ' <a href="' . $this->buildPageUrl(2) . '">2</a> ... ';
+                //$html .= ' <a href="' . $this->buildPageUrl(1) . '">1</a>';
+                //$html .= ' <a href="' . $this->buildPageUrl(2) . '">2</a> ... ';
+                $html .= ' <a ng-click="changePage(1)" >1</a>';
+                $html .= ' <a ng-click="changePage(2)" >2</a> ... ';
             }
 
             if ($this->currPage >= $startMargin) {
@@ -146,8 +150,10 @@ class Page {
 
             for ($p = $beginPage; $p <= $endPage; $p++) {
                 $currClass = $this->currPage == $p ? ' class="cur"' : '';
-                $url = !empty($currClass) ? 'javascript:;' : $this->buildPageUrl($p);
-                $html .= ' <a href="' . $url . '"' . $currClass . '>' . $p . '</a>';
+                //$url = !empty($currClass) ? 'javascript:;' : $this->buildPageUrl($p);
+                //$html .= ' <a href="' . $url . '"' . $currClass . '>' . $p . '</a>';
+                //$url = !empty($currClass) ? 'javascript:;' : changePage($p);
+                $html .= ' <a ng-click="changePage('.$p.')"' .'>' . $p . '</a>';
             }
 
             if ($this->currPage < $this->pageCount - $offsetPageNum && $this->pageCount > $startMargin) {
@@ -155,11 +161,14 @@ class Page {
             }
 
             if ($this->currPage < $this->pageCount) {
-                $html .= ' <a href="' . $this->buildPageUrl($this->currPage + 1) . '">下一页</a>';
+                //$html .= ' <a href="' . $this->buildPageUrl($this->currPage + 1) . '">下一页</a>';
+                $nexPage=$this->currPage + 1;
+                $html .= ' <a ng-click="changePage('.$nexPage.')">下一页</a>';
             }
 
             if (($this->currPage + $startMargin - 2) <= $this->pageCount) {
-                $html .= ' <a href="' . $this->buildPageUrl($this->pageCount) . '">末页</a>';
+                //$html .= ' <a href="' . $this->buildPageUrl($this->pageCount) . '">末页</a>';
+                $html .= ' <a ng-click="changePage('.$this->pageCount.')">末页</a>';
             }
 
             $html .= '</nav>';

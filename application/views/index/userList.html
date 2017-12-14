@@ -1,16 +1,21 @@
-<script type="text/javascript" src="<?php echo APP_HOST;?>public/js/userList.js"></script>
-<table>
-    <tr>
-        <th>id</th>
-        <th>name</th>
-        <th>ratio</th>
-    </tr>
-    <?php foreach($list as $v){;?>
-    <tr>
-        <td><?php echo $v['id'];?></td>
-        <td><?php echo $v['name'];?></td>
-        <td><?php echo $v['ps'];?></td>
-    </tr>
-    <?php }?>
-</table>
-<p><?php echo $page;?></p>
+
+<div ng-controller="userList">
+    <table>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>ps</th>
+        </tr>
+        <tr ng-repeat="x in list">
+            <td>{{x.id}}</td>
+            <td>{{x.name}}</td>
+            <td>{{x.ps}}</td>
+        </tr>
+
+    </table>
+    <p class="page"></p>
+</div>
+</body>
+<script src="<?php echo APP_HOST;?>js/app/common.js"></script>
+<script type="text/javascript" src="<?php echo APP_HOST;?>js/app/userList.js"></script>
+</html>

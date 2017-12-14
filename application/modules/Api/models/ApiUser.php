@@ -6,7 +6,7 @@
  * Date: 2017/10/27
  * Time: 11:12
  */
-class UserModel {
+class ApiUserModel{
     public $db;
     private $userTable = 'user';
 

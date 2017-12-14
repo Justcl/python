@@ -28,7 +28,7 @@ class SessionRedisManager {
             array($this, 'destory'),
             array($this, 'gc')
         );
-        Yaf_Session::getInstance()->start();
+        //Yaf_Session::getInstance()->start();
     }
 
     public static function getInstance($config){
