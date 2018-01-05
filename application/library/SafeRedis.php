@@ -196,7 +196,7 @@ Class SafeRedis
         $this->timeout = $timeout;
         $this->errno = $errno;
         $this->errstr = $errstr;
-        $this->handle = fsockopen($this->host,$this->port,$this->errno, $this->errstr,$this->timeout);
+        $this->handle = @fsockopen($this->host,$this->port,$this->errno, $this->errstr,$this->timeout);
         if(!$this->handle){
             echo 'redis server is not run';die;
         }

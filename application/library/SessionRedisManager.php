@@ -18,17 +18,21 @@ class SessionRedisManager {
         $this->redisPort = $config['port'] ?: 6379;
         $this->expireTime = $config['expireTime'] ?: ini_get('session.gc_maxlifetime');
         $this->_checkHandler();
-        self::$redis = new Redis();
-        self::$redis->connect($this->redisHost, $this->redisPort);
-        session_set_save_handler(
-            array($this, 'open'),
-            array($this, 'close'),
-            array($this, 'read'),
-            array($this, 'write'),
-            array($this, 'destory'),
-            array($this, 'gc')
-        );
-        //Yaf_Session::getInstance()->start();
+        try{
+            self::$redis = new Redis();
+            self::$redis->connect($this->redisHost, $this->redisPort);
+            session_set_save_handler(
+                array($this, 'open'),
+                array($this, 'close'),
+                array($this, 'read'),
+                array($this, 'write'),
+                array($this, 'destory'),
+                array($this, 'gc')
+            );
+            Yaf_Session::getInstance()->start();
+        }catch (Exception $e){
+            echo $e->getMessage();exit;
+        }
     }
 
     public static function getInstance($config){
@@ -39,19 +43,20 @@ class SessionRedisManager {
     }
 
     private function _checkHandler() {
-        ini_get('session.save_handler') != 'user' ? ini_set('session.save_handler', 'user') : true;
+        ini_get('session.save_handler') != 'user' ? ini_set('session.save_handler', 'user') : '';
     }
+
 
     public function open() {
         return true;
     }
 
     public function close() {
-        self::$redis->close();
+        return self::$redis->close();
     }
 
     public function read($key) {
-        return self::$redis->get($key);
+        return self::$redis->get($key)?:'';//php7.1 session重写 read必须返回字符串
     }
 
     public function write($key, $value) {
